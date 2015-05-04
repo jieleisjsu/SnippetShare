@@ -1,9 +1,15 @@
 package DAOImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import DAO.UserDAO;
+import Entity.Comment;
 import Entity.User;
+import RowMapper.CommentRowMapper;
+import RowMapper.UserRowMapper;
 
 public class UserDAOImpl implements UserDAO {
 	private JdbcTemplate jdbcTemplate;
@@ -22,5 +28,13 @@ public class UserDAOImpl implements UserDAO {
 			user.getName(), user.getAddress()});
 		return rowAffected == 1;
 	}
+	@Override
+	public List<User> findAll() {
+		String sql = "SELECT * FROM USER"; 
+		List<User> users = jdbcTemplate.query(sql, new UserRowMapper()); 
+		if(users == null) return new ArrayList<User>();
+		return users;
+	}
+	
 
 }
