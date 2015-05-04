@@ -60,6 +60,14 @@ public class SnippetDAOImpl implements SnippetDAO {
 					sql, new Object[] { id }, new SnippetRowMapper());
 		return snippet;
 	}
+	@Override
+	public List<Snippet> findByUsername(String username) {
+		String sql = "SELECT * FROM SNIPPET WHERE owner = ?";
+		List<Snippet> snippets = jdbcTemplate.query(
+					sql, new Object[] {username}, new SnippetRowMapper());
+		if(snippets == null) return new ArrayList<Snippet>();
+		return snippets;
+	}
 	
 	
 

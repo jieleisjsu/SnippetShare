@@ -82,12 +82,22 @@ public class MVCController {
 	}
 	
 
-
+	@Transactional
 	@RequestMapping(value="index", method= RequestMethod.GET)
 	public String getIndex(Model model, HttpServletRequest req) {
-		String name = "";
-		if((name = req.getRemoteUser()) != null){
-			model.addAttribute("currentUser", name);
+		String username = req.getRemoteUser();
+		if(username != null){
+			
+			List<Board> ownBoards = boardDAO.findOwnBoard(username);
+			model.addAttribute("ownBoards", ownBoards);
+			
+			List<Comment> ownComments = commentDAO.findByUsername(username);
+			model.addAttribute("ownComments", ownComments);
+			
+			List<Snippet> ownSnippets = snippetDAO.findByUsername(username);
+			model.addAttribute("ownSnippets", ownSnippets);
+			
+			model.addAttribute("currentUser", username);
 		}else{
 			model.addAttribute("currentUser","");
 		}

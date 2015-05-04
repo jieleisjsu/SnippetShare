@@ -35,5 +35,12 @@ public class CommentDAOImpl implements CommentDAO{
 		if(comments == null) return new ArrayList<Comment>();
 		return comments;
 	}
+	@Override
+	public List<Comment> findByUsername(String username) {
+		String sql = "SELECT * FROM COMMENT where username = ?"; 
+		List<Comment> comments = jdbcTemplate.query(sql, new Object[]{username}, new CommentRowMapper()); 
+		if(comments == null) return new ArrayList<Comment>();
+		return comments;
+	}
 
 }
