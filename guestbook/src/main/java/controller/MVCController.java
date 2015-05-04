@@ -72,13 +72,25 @@ public class MVCController {
 		return "testAuthority";
 	}
 	
-	@RequestMapping(value="homepage", method= RequestMethod.GET)
-	public String getHomepage() {
-		return "homepage";
+	@RequestMapping(value="/", method= RequestMethod.GET)
+	public String getHomepage(HttpServletRequest req) {
+		if(req.getRemoteUser() != null){
+			return "index";
+		}else{
+			return "login";
+		}
 	}
 	
+
+
 	@RequestMapping(value="index", method= RequestMethod.GET)
-	public String getIndex() {
+	public String getIndex(Model model, HttpServletRequest req) {
+		String name = "";
+		if((name = req.getRemoteUser()) != null){
+			model.addAttribute("currentUser", name);
+		}else{
+			model.addAttribute("currentUser","");
+		}
 		return "index";
 	}
 	
@@ -98,7 +110,7 @@ public class MVCController {
 		if(userDAO.insert(user)) return "index";
 		else {
 			model.addAttribute("errorMessage", "username already regiestred");
-			return "signup";
+			return "login";
 		}
 	}
 	
