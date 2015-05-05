@@ -98,6 +98,11 @@ public class MVCController {
 			List<Snippet> ownSnippets = snippetDAO.findByUsername(username);
 			model.addAttribute("ownSnippets", ownSnippets);
 			
+			List<User> users = userDAO.findAll();
+			List<String> allUsername = new ArrayList<String>();
+			for(User user : users) allUsername.add(user.getUsername());
+			model.addAttribute("allUsername", allUsername);
+			
 			model.addAttribute("currentUser", username);
 		}else{
 			model.addAttribute("currentUser","");
