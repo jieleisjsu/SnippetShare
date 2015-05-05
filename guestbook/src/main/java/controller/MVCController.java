@@ -92,11 +92,14 @@ public class MVCController {
 			List<Board> ownBoards = boardDAO.findOwnBoard(username);
 			model.addAttribute("ownBoards", ownBoards);
 			
-			List<Comment> ownComments = commentDAO.findByUsername(username);
-			model.addAttribute("ownComments", ownComments);
+			List<Board> publicBoards = boardDAO.findPublicBoard();
+			model.addAttribute("publicBoards", publicBoards);
 			
-			List<Snippet> ownSnippets = snippetDAO.findByUsername(username);
-			model.addAttribute("ownSnippets", ownSnippets);
+			List<Board> availablePrivateBoards = boardDAO.findPrivate(username);
+			model.addAttribute("availablePrivateBoards", availablePrivateBoards);
+			
+			List<Board> unavailablePrivateBoards = boardDAO.findUnavailable(username);
+			model.addAttribute("unavailablePrivateBoards", unavailablePrivateBoards);
 			
 			List<User> users = userDAO.findAll();
 			List<String> allUsername = new ArrayList<String>();

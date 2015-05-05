@@ -51,6 +51,14 @@ public class BoardDAOImpl implements BoardDAO {
 		return boards;
 	}
 	@Override
+	public List<Board> findUnavailable(String username) {
+		String sql = "SELECT * FROM BOARD where access = 'private' and id not in "
+				+ "(SELECT boardID as id FROM ACCESS where username = ?)"; 
+		List<Board> boards = jdbcTemplate.query(sql, new Object[]{username}, new BoardRowMapper()); 
+		if(boards == null) return new ArrayList<Board>();
+		return boards;
+	}
+	@Override
 	public Set<Integer> findAllAvailbleBoardID(String username) {
 		List<Board> allBoard = new ArrayList<Board>();
 		allBoard.addAll(findPublicBoard());
