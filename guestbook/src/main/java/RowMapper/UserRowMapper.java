@@ -13,9 +13,6 @@ public class UserRowMapper implements RowMapper<User>{
 	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 		User user = new User();
 		user.setUsername(rs.getString("username"));
-		return null;
+		return user;
 	}
-
-	
-
 }

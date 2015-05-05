@@ -103,6 +103,7 @@ public class MVCController {
 			for(User user : users) allUsername.add(user.getUsername());
 			model.addAttribute("allUsername", allUsername);
 			
+
 			model.addAttribute("currentUser", username);
 		}else{
 			model.addAttribute("currentUser","");
@@ -110,6 +111,16 @@ public class MVCController {
 		return "index";
 	}
 	
+	@RequestMapping(value="testUsers", method = RequestMethod.GET) 
+	public String getAllUsers(Model model){
+		List<User> users = userDAO.findAll();
+		
+		model.addAttribute("userscount", users.size());
+		List<String> allUsername = new ArrayList<String>();
+		for(User user : users) allUsername.add(user.getUsername());
+		model.addAttribute("firstuser", allUsername.get(0));
+		return "testusers";
+	}
 	
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	@RequestMapping(value="signup", method= RequestMethod.POST)
@@ -146,7 +157,7 @@ public class MVCController {
 			return "error";
 		}
 		boardDAO.insert(board);
-		return "redirect:getboards";
+		return "redirect:http://arboreal-harbor-92603.appspot.com/index";
 	}
 	
 	@Transactional(readOnly = true)
@@ -190,7 +201,8 @@ public class MVCController {
 		else {
 			int boardID = snippet.getBoardID();
 			if(snippetDAO.deleteByID(id)) {
-				return "redirect:getboardbyid?id=" + boardID;
+				//return "redirect:getboardbyid?id=" + boardID;
+				return "redirect:http://arboreal-harbor-92603.appspot.com/index";
 			}
 			else {
 				model.addAttribute("errorMessage", "fail to delete the snippet");
@@ -237,7 +249,7 @@ public class MVCController {
 	}
 	
 	@Transactional
-	@RequestMapping(value="user/creatsnippet", method= RequestMethod.POST)
+	@RequestMapping(value="user/createsnippet", method= RequestMethod.POST)
 	public String creatSnippet(Model model, HttpServletRequest req,
 			@RequestParam("title") String title,
 			@RequestParam("tags") String tags,
@@ -255,7 +267,7 @@ public class MVCController {
 		snippet.setBoardID(boardID);
 		snippet.setOwner(req.getRemoteUser());
 		if(snippetDAO.insert(snippet)) {
-			return "redirect:getboardbyid?id=" + boardID;
+			return "redirect:http://arboreal-harbor-92603.appspot.com/index";
 		}
 		else {
 			model.addAttribute("errorMessage", "cannot creat thie snippet");
